@@ -1,10 +1,17 @@
 import { client } from '@/src/lib/redis';
 import { NextApiRequest, NextApiResponse } from 'next';
+import NextCors from 'nextjs-cors';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  await NextCors(req, res, {
+    methods: ['GET', 'POST'],
+    origin: '*',
+    optionsSuccessStatus: 200,
+  });
+
   if (req.method === 'POST') {
     const { logs } = req.body;
 
