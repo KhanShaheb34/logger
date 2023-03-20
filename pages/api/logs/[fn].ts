@@ -10,8 +10,9 @@ export default async function handler(
     origin: '*',
     optionsSuccessStatus: 200,
   });
+  const { fn } = req.query;
 
-  console.log(req.method);
+  console.log(fn);
 
   if (req.method === 'POST') {
     console.log(req.body);
