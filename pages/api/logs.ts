@@ -14,9 +14,7 @@ export default async function handler(
   console.log(req.method);
 
   if (req.method === 'POST') {
-    const { logs } = req.body;
-
-    console.log(logs);
+    console.log(req.body);
     return res.status(200).json({ success: true });
   } else if (req.method === 'GET') {
     return res.status(200).json({ success: true });
