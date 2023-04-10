@@ -1,5 +1,6 @@
 import { prisma } from "@/server/db";
 import { type Log } from "@prisma/client";
+import moment from "moment";
 import { useState } from "react";
 
 const BeautifiedJsonOrText = ({ text }: { text?: string }) => {
@@ -41,6 +42,9 @@ const Home = ({
   return (
     <main className="flex w-full ">
       <div className="flex w-1/2  grow flex-col gap-5 p-5">
+        <h1 className="text-3xl font-bold">
+          <pre>&gt;logger_</pre>
+        </h1>
         <input
           type="text"
           placeholder="Search"
@@ -61,14 +65,20 @@ const Home = ({
               <tr
                 key={log.id}
                 onClick={() => setSelectedLog(log)}
-                className="cursor-pointer whitespace-nowrap border-b border-gray-200 hover:bg-slate-100"
+                className={`cursor-pointer whitespace-nowrap border-b border-gray-200 hover:bg-slate-100 ${
+                  log.id === selectedLog?.id ? "bg-slate-100" : ""
+                }`}
               >
-                <td className="py-2">{log.createdAt}</td>
+                <td className="py-2">{moment(log.createdAt).fromNow()}</td>
                 <td className="py-2">
-                  {log.message.slice(0, 30).replace("\n", " ") + "..."}
+                  {log.message.length > 30
+                    ? log.message.slice(0, 30).replace("\n", " ") + "..."
+                    : log.message}
                 </td>
                 <td className="py-2">
-                  {log.originatedFrom.slice(0, 30) + "..."}
+                  {log.originatedFrom.length > 30
+                    ? log.originatedFrom.slice(0, 30) + "..."
+                    : log.originatedFrom}
                 </td>
                 <td className="py-2">{log.tag}</td>
               </tr>
@@ -76,7 +86,19 @@ const Home = ({
           </tbody>
         </table>
       </div>
-      <div className="h-screen w-1/2 grow overflow-auto bg-gray-100 p-3">
+      <div className="flex h-screen w-1/2 grow flex-col gap-3 overflow-auto bg-slate-50 p-5">
+        <p>
+          <span className="font-bold">Originated From:</span>{" "}
+          {selectedLog?.originatedFrom}
+        </p>
+        <p>
+          <span className="font-bold">Tag:</span> {selectedLog?.tag}
+        </p>
+        <p>
+          <span className="font-bold">CreatedAt:</span>{" "}
+          {moment(selectedLog?.createdAt).fromNow()}
+        </p>
+        <p className="font-bold">Message:</p>
         <BeautifiedJsonOrText text={selectedLog?.message} />
       </div>
     </main>
