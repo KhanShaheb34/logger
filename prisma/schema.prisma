@@ -17,7 +17,7 @@ model Log {
     updatedAt      DateTime  @updatedAt
     deletedAt      DateTime? @map("deleted_at")
     message        String    @db.Text
-    originatedFrom String
+    originatedFrom String    @default("unknown")
     tag            String?
     logType        String    @default("info")
 }
