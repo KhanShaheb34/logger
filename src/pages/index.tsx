@@ -105,7 +105,7 @@ const Home = ({
   );
 };
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   const data = await prisma.log.findMany({
     orderBy: {
       createdAt: "desc",
